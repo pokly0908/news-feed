@@ -7,9 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "USER")
 public class User {
     @Id
@@ -28,4 +30,10 @@ public class User {
     @Column(nullable = false)
     private String userInfo;
 
+    public User(String nickname, String email, String password, String userinfo) {
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.userInfo = userinfo;
+    }
 }

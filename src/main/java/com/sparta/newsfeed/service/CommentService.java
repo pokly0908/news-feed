@@ -6,6 +6,7 @@ import com.sparta.newsfeed.entity.Comment;
 import com.sparta.newsfeed.entity.Product;
 import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.repository.CommentRepository;
+import com.sparta.newsfeed.repository.UserRepository;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
 
     public List<CommentResponseDto> getCommentByProduct(Long productId) { // 특정 상품의 댓글 조회
         Product product = findProduct(productId);
