@@ -1,5 +1,6 @@
 package com.sparta.newsfeed.entity;
 
+import com.sparta.newsfeed.dto.user.UserProfileRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,5 +31,10 @@ public class User {
         this.email = email;
         this.password = password;
         this.userInfo = userinfo;
+    }
+
+    public void updateProfile(UserProfileRequest request) {
+        this.nickname = request.getNickname();
+        this.userInfo = request.getUserinfo();
     }
 }

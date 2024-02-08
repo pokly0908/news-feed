@@ -4,6 +4,7 @@ import com.sparta.newsfeed.jwt.JwtUtil;
 import com.sparta.newsfeed.security.JwtAuthenticationFilter;
 import com.sparta.newsfeed.security.JwtAuthorizationFilter;
 import com.sparta.newsfeed.security.UserDetailsServiceImpl;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -68,13 +69,13 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated()
         );
 //
-//        http.exceptionHandling((exceptionHandling) ->
-//                exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
-//                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                    response.setCharacterEncoding("utf-8");
-//                    response.getWriter().write("인증 처리 문제");
-//                })
-//        );
+        http.exceptionHandling((exceptionHandling) ->
+                exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setCharacterEncoding("utf-8");
+                    response.getWriter().write("인증 처리 문제");
+                })
+        );
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);

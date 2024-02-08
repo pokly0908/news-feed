@@ -23,9 +23,9 @@ public class UserController {
 
     @PostMapping("/users/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody UserSignupRequest request, BindingResult bindingResult) {
-        System.out.println("UserController.signup");
+
         String errorMessages = "";
-        if (bindingResult.hasFieldErrors()) {
+        if (bindingResult.hasErrors()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 errorMessages += fieldError.getField() + " : " + fieldError.getDefaultMessage() + "\n";
             }
@@ -42,6 +42,25 @@ public class UserController {
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         UserProfileResponse response = userService.getProfile(userDetails.getUser());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/users/profile")
+    public ResponseEntity<?> updateProfile(
+            @Valid @RequestBody UserProfileRequest request,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        String errorMessages = "";
+        if (bindingResult.hasErrors()) {
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                errorMessages += fieldError.getField() + " : " + fieldError.getDefaultMessage() + "\n";
+            }
+            return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
+        }
+
+        UserProfileResponse response = userService.updateProfile(userDetails.getUser(), request);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
