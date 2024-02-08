@@ -12,11 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,5 +32,11 @@ public class WishController {
     public List<WishAllResponseDto> readWish(@AuthenticationPrincipal
     UserDetailsImpl userDetails){
         return wishService.readWish(userDetails);
+    }
+
+    @DeleteMapping("/{wishId}")
+    public ResponseEntity<WishResponseDto> deleteWish(@Valid @PathVariable Long wishId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        wishService.delete(wishId, userDetails);
+        return ResponseEntity.ok().body(new WishResponseDto("삭제가 완료되었습니다.", HttpStatus.OK));
     }
 }

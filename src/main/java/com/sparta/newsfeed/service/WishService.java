@@ -38,9 +38,17 @@ public class WishService {
         List<WishAllResponseDto> wishs = new ArrayList<>();
         for (Wish value : wish) {
             Product product = value.getProduct();
-            wishs.add(new WishAllResponseDto(product.getProductId(), product.getTitle(),
+            wishs.add(new WishAllResponseDto(value.getWishId(), product.getProductId(), product.getTitle(),
                 product.getProductInfo()));
         }
         return wishs;
+    }
+
+    public void delete(Long wishId, UserDetailsImpl userDetails) {
+        Wish wish = wishRepository.findById(wishId).orElseThrow(() -> new IllegalArgumentException("관심상품이 존재하지 않습니다."));
+        if(!wish.getUser().getUserId().equals(userDetails.getUser().getUserId())){
+            throw new IllegalArgumentException("회원님의 관심상품이 아닙니다.");
+        }
+        wishRepository.delete(wish);
     }
 }
