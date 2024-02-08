@@ -10,8 +10,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 @Slf4j(topic = "JwtUtil")
 @Component
@@ -28,6 +30,8 @@ public class JwtUtil {
     private String secretKey;
     private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
+    private static final List<String> blackList = new ArrayList<>();
 
     @PostConstruct
     public void init() {
@@ -63,6 +67,9 @@ public class JwtUtil {
     // 토큰 검증
     public boolean validateToken(String token) {
         try {
+            if( blackList.stream().anyMatch(t -> t.equals(token))) {
+                throw new IllegalArgumentException("잘못된 JWT 토큰입니다.");
+            }
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException | SignatureException e) {
@@ -80,5 +87,9 @@ public class JwtUtil {
     // 토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    }
+
+    public void addBlackList(String jwtFromHeader) {
+        blackList.add(jwtFromHeader);
     }
 }
