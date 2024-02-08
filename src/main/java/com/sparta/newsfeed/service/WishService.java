@@ -35,7 +35,7 @@ public class WishService {
 
     public WishAllResponseDto readWish(UserDetailsImpl userDetails) {
         Long userId = userDetails.getUser().getUserId();
-        List<Wish> wishs = wishRepository.findAllByUser_UserId(userDetails.getUser().getUserId());
+        List<Wish> wishs = wishRepository.findAllByUser_UserId(userId);
         return new WishAllResponseDto(wishs);
     }
 }

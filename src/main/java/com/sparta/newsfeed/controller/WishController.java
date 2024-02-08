@@ -28,7 +28,7 @@ public class WishController {
         return wishService.createWish(productId, userDetails);
     }
 
-    @GetMapping("/")
+    @GetMapping("/{userId}")
     public WishAllResponseDto readWish(@AuthenticationPrincipal
     UserDetailsImpl userDetails){
         return wishService.readWish(userDetails);
