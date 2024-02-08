@@ -1,17 +1,18 @@
 package com.sparta.newsfeed.controller;
 
+import com.sparta.newsfeed.dto.user.UserProfileRequest;
+import com.sparta.newsfeed.dto.user.UserProfileResponse;
 import com.sparta.newsfeed.dto.user.UserSignupRequest;
+import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -34,6 +35,15 @@ public class UserController {
         userService.signup(request);
 
         return ResponseEntity.ok("회원가입 성공");
+    }
+
+    @GetMapping("/users/profile")
+    public ResponseEntity<UserProfileResponse> getProfile(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        UserProfileResponse response = userService.getProfile(userDetails.getUser());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
