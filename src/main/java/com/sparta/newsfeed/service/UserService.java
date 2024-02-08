@@ -1,5 +1,6 @@
 package com.sparta.newsfeed.service;
 
+import com.sparta.newsfeed.dto.user.UserProfileRequest;
 import com.sparta.newsfeed.dto.user.UserProfileResponse;
 import com.sparta.newsfeed.dto.user.UserSignupRequest;
 import com.sparta.newsfeed.entity.User;
@@ -36,10 +37,25 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional(readOnly = true)
     public UserProfileResponse getProfile(User user) {
         User findUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
         return new UserProfileResponse(findUser);
+    }
+
+    @Transactional
+    public UserProfileResponse updateProfile(User user, UserProfileRequest request) {
+        User findUser = userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        if (! passwordEncoder.matches(request.getPassword(), findUser.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 다릅니다");
+        }
+
+        user.updateProfile(request);
+
+        return new UserProfileResponse(user);
     }
 }
