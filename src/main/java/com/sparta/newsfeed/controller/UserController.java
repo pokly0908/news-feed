@@ -20,7 +20,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("users/signup")
+    @PostMapping("/users/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody UserSignupRequest request, BindingResult bindingResult) {
         System.out.println("UserController.signup");
         String errorMessages = "";
