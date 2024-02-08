@@ -3,8 +3,10 @@ package com.sparta.newsfeed.controller;
 import com.sparta.newsfeed.dto.user.UserProfileRequest;
 import com.sparta.newsfeed.dto.user.UserProfileResponse;
 import com.sparta.newsfeed.dto.user.UserSignupRequest;
+import com.sparta.newsfeed.jwt.JwtUtil;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,8 @@ public class UserController {
 
     private final UserService userService;
 
+    private final JwtUtil jwtUtil;
+
     @PostMapping("/users/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody UserSignupRequest request, BindingResult bindingResult) {
 
@@ -35,6 +39,13 @@ public class UserController {
         userService.signup(request);
 
         return ResponseEntity.ok("회원가입 성공");
+    }
+
+    @PostMapping("/users/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        String jwtFromHeader = jwtUtil.getJwtFromHeader(request);
+        jwtUtil.addBlackList(jwtFromHeader);
+        return ResponseEntity.ok("로그아웃 되었습니다.");
     }
 
     @GetMapping("/users/profile")
