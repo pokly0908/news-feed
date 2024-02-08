@@ -68,7 +68,7 @@ public class WebSecurityConfig {
 //                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
         );
-//
+
         http.exceptionHandling((exceptionHandling) ->
                 exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
