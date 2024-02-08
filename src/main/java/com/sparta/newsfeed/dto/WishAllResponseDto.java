@@ -11,11 +11,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WishAllResponseDto {
 
+    private Long wishId;
     private Long productId;
     private String title;
     private String productInfo;
 
-    public WishAllResponseDto(Long productId, String title, String productInfo) {
+    public WishAllResponseDto(Long wishId, Long productId, String title, String productInfo) {
+        this.wishId = wishId;
         this.productId = productId;
         this.title = title;
         this.productInfo = productInfo;
