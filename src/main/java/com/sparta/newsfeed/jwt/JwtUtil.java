@@ -1,9 +1,12 @@
 package com.sparta.newsfeed.jwt;
 
+import com.sparta.newsfeed.redis.RedisTemplateService;
+import com.sparta.newsfeed.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,8 +19,10 @@ import java.util.Date;
 import java.util.List;
 
 @Slf4j(topic = "JwtUtil")
+@RequiredArgsConstructor
 @Component
 public class JwtUtil {
+    private final UserRepository userRepository;
     // Header KEY 값
     public static final String JWT_HEADER = "JWT";
 
@@ -25,6 +30,8 @@ public class JwtUtil {
     public static final String BEARER_PREFIX = "Bearer ";
     // 토큰 만료시간
     private final long TOKEN_TIME = 60 * 60 * 1000L; // 60분
+
+    private final RedisTemplateService redisTemplateService;
 
     @Value("${jwt.secret.key}") // Base64 Encode 한 SecretKey
     private String secretKey;
@@ -67,9 +74,11 @@ public class JwtUtil {
     // 토큰 검증
     public boolean validateToken(String token) {
         try {
-            if( blackList.stream().anyMatch(t -> t.equals(token))) {
+
+            if (token.equals(findBlackList(token))) {
                 throw new IllegalArgumentException("잘못된 JWT 토큰입니다.");
             }
+
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException | SignatureException e) {
@@ -89,7 +98,18 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
-    public void addBlackList(String jwtFromHeader) {
-        blackList.add(jwtFromHeader);
+    public void addBlackList(String jwtToken) {
+        Claims userInfo = getUserInfoFromToken(jwtToken);
+        long expiration = userInfo.getExpiration().getTime();
+        String email = (String) userInfo.get("sub");
+
+        redisTemplateService.save(email, jwtToken, expiration);
+    }
+
+    public String findBlackList(String token) {
+        Claims userInfo = getUserInfoFromToken(token);
+        String email = (String) userInfo.get("sub");
+
+        return redisTemplateService.get(email);
     }
 }

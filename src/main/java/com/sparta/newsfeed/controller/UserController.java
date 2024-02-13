@@ -4,8 +4,10 @@ import com.sparta.newsfeed.dto.user.UserProfileRequest;
 import com.sparta.newsfeed.dto.user.UserProfileResponse;
 import com.sparta.newsfeed.dto.user.UserSignupRequest;
 import com.sparta.newsfeed.jwt.JwtUtil;
+import com.sparta.newsfeed.redis.RedisTemplateService;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.UserService;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @RestController
@@ -24,6 +28,8 @@ public class UserController {
     private final UserService userService;
 
     private final JwtUtil jwtUtil;
+
+    private final RedisTemplateService redisTemplate;
 
     @PostMapping("/users/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody UserSignupRequest request, BindingResult bindingResult) {
@@ -43,8 +49,9 @@ public class UserController {
 
     @PostMapping("/users/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
-        String jwtFromHeader = jwtUtil.getJwtFromHeader(request);
-        jwtUtil.addBlackList(jwtFromHeader);
+        String jwtToken = jwtUtil.getJwtFromHeader(request);
+
+        jwtUtil.addBlackList(jwtToken);
         return ResponseEntity.ok("로그아웃 되었습니다.");
     }
 
