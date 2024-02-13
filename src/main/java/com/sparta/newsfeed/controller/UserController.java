@@ -7,7 +7,6 @@ import com.sparta.newsfeed.jwt.JwtUtil;
 import com.sparta.newsfeed.redis.RedisTemplateService;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.UserService;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +16,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
