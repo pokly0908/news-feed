@@ -3,14 +3,7 @@ package com.sparta.newsfeed.entity;
 
 import com.sparta.newsfeed.dto.ProductRequestDto;
 import com.sparta.newsfeed.security.UserDetailsImpl;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,13 +35,17 @@ public class Product extends Timestamped {
     @Column(nullable = false)
     private int price;
 
-    public Product(ProductRequestDto requestDto, UserDetailsImpl userDetails) {
+    @Column(nullable = false)
+    private String imageUrl;
+
+    public Product(ProductRequestDto requestDto, UserDetailsImpl userDetails, String imageUrl) {
         this.user = userDetails.getUser();
         this.username = userDetails.getUsername();
         this.category = requestDto.getCategory();
         this.title = requestDto.getTitle();
         this.productInfo = requestDto.getProductInfo();
         this.price = requestDto.getPrice();
+        this.imageUrl = imageUrl;
     }
 
     public void update(ProductRequestDto requestDto) {
