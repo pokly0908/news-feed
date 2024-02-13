@@ -15,6 +15,7 @@ public class ProductResponseDto {
     private int price;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private String imageUrl;
 
     public ProductResponseDto(Product saveProduct) {
         this.productId = saveProduct.getProductId();
@@ -25,5 +26,6 @@ public class ProductResponseDto {
         this.price = saveProduct.getPrice();
         this.createdAt = saveProduct.getCreatedAt();
         this.modifiedAt = saveProduct.getModifiedAt();
+        this.imageUrl = saveProduct.getImageUrl();
     }
 }

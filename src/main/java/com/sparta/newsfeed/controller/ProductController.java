@@ -16,8 +16,8 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
 
-    @PostMapping("/product")
-    public ProductResponseDto createProduct(@RequestBody ProductRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @PostMapping("/product") // JSON 데이터와 이미지를 함께 업로드하기 위해 @ModelAttribute 애너테이션 사용
+    public ProductResponseDto createProduct(@ModelAttribute ProductRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return productService.createProduct(requestDto, userDetails);
     }
 

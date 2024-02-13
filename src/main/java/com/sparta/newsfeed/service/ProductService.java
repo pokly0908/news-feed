@@ -16,16 +16,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final UploadService uploadService;
 
     @Transactional
     public ProductResponseDto createProduct(ProductRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Product product = new Product(requestDto, userDetails);
-
-        Product saveProduct = productRepository.save(product);
-
-        ProductResponseDto responseDto = new ProductResponseDto(saveProduct);
-
-        return responseDto;
+        String imageUrl = uploadService.uploadImageAndGetUrl(requestDto.getImage());
+        Product product = productRepository.save(new Product(requestDto, userDetails, imageUrl));
+        return new ProductResponseDto(product);
     }
 
     public List<ProductResponseDto> getProduct() {
@@ -60,4 +57,5 @@ public class ProductService {
         return productRepository.findById(productId).orElseThrow(() ->
                 new IllegalArgumentException("선택한 물건은 존재하지 않습니다."));
     }
+
 }
