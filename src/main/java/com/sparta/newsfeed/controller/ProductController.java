@@ -31,6 +31,11 @@ public class ProductController {
         return productService.getProductById(productId);
     }
 
+    @GetMapping("/product/search")
+    public List<ProductResponseDto> searchProduct(@RequestParam String param){
+        return productService.searchProduct(param);
+    }
+
     @PutMapping("/product/{productId}")
     public Long updateProduct(@PathVariable Long productId, @RequestBody ProductRequestDto requestDto) {
         return productService.updateProduct(productId, requestDto);

@@ -35,6 +35,10 @@ public class ProductService {
     public List<ProductResponseDto> getProductById(Long productId) {
         return productRepository.findProductByProductId(productId).stream().map(ProductResponseDto::new).toList();
     }
+
+    public List<ProductResponseDto> searchProduct(String param) {
+        return productRepository.findByTitleContaining(param).stream().map(ProductResponseDto::new).toList();
+    }
     @Transactional
     public Long updateProduct(Long productId, ProductRequestDto requestDto) {
         Product product = findProduct(productId);
