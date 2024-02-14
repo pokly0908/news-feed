@@ -49,10 +49,11 @@ public class Product extends Timestamped {
         this.imageUrl = imageUrl;
     }
 
-    public void update(ProductRequestDto requestDto) {
+    public void update(ProductRequestDto requestDto, String imageUrl) {
         this.category = CategoryEnum.valueOf(requestDto.getCategory());
         this.title = requestDto.getTitle();
         this.productInfo = requestDto.getProductInfo();
         this.price = requestDto.getPrice();
+        this.imageUrl = imageUrl;
     }
 }
