@@ -24,7 +24,8 @@ public class Product extends Timestamped {
     private String username;
 
     @Column(nullable = false)
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private CategoryEnum category;
 
     @Column(nullable = false)
     private String title;
@@ -41,7 +42,7 @@ public class Product extends Timestamped {
     public Product(ProductRequestDto requestDto, UserDetailsImpl userDetails, String imageUrl) {
         this.user = userDetails.getUser();
         this.username = userDetails.getUsername();
-        this.category = requestDto.getCategory();
+        this.category = CategoryEnum.valueOf(requestDto.getCategory());
         this.title = requestDto.getTitle();
         this.productInfo = requestDto.getProductInfo();
         this.price = requestDto.getPrice();
@@ -49,7 +50,7 @@ public class Product extends Timestamped {
     }
 
     public void update(ProductRequestDto requestDto) {
-        this.category = requestDto.getCategory();
+        this.category = CategoryEnum.valueOf(requestDto.getCategory());
         this.title = requestDto.getTitle();
         this.productInfo = requestDto.getProductInfo();
         this.price = requestDto.getPrice();
