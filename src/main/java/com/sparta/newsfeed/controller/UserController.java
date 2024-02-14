@@ -1,8 +1,10 @@
 package com.sparta.newsfeed.controller;
 
+import com.sparta.newsfeed.dto.NotificationResponseDto;
 import com.sparta.newsfeed.dto.user.UserProfileRequest;
 import com.sparta.newsfeed.dto.user.UserProfileResponse;
 import com.sparta.newsfeed.dto.user.UserSignupRequest;
+import com.sparta.newsfeed.entity.Notification;
 import com.sparta.newsfeed.jwt.JwtUtil;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.UserService;
@@ -15,6 +17,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -46,6 +50,11 @@ public class UserController {
         String jwtFromHeader = jwtUtil.getJwtFromHeader(request);
         jwtUtil.addBlackList(jwtFromHeader);
         return ResponseEntity.ok("로그아웃 되었습니다.");
+    }
+
+    @GetMapping("/users/notification")
+    public List<NotificationResponseDto> getNotifications(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return userService.getNotifications(userDetails.getUser());
     }
 
     @GetMapping("/users/profile")

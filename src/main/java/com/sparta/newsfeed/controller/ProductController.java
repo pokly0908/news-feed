@@ -37,7 +37,7 @@ public class ProductController {
     }
 
     @PutMapping("/product/{productId}")
-    public Long updateProduct(@PathVariable Long productId, @RequestBody ProductRequestDto requestDto) {
+    public Long updateProduct(@PathVariable Long productId, @ModelAttribute ProductRequestDto requestDto) {
         return productService.updateProduct(productId, requestDto);
     }
 
