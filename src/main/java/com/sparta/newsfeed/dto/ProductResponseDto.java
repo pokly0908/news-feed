@@ -1,5 +1,6 @@
 package com.sparta.newsfeed.dto;
 
+import com.sparta.newsfeed.entity.CategoryEnum;
 import com.sparta.newsfeed.entity.Product;
 import lombok.Getter;
 
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 public class ProductResponseDto {
     private Long productId;
     private String username;
-    private String category;
+    private CategoryEnum category;
     private String title;
     private String productInfo;
     private int price;
