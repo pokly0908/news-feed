@@ -14,7 +14,9 @@ public class UserDtoTest {
     @DisplayName("유저 생성 DTO")
     @Test
     void UserSignupDto(){
+        //given
         User user = new User(userSignupRequest.getNickname(), userSignupRequest.getEmail(), userSignupRequest.getPassword(), userSignupRequest.getUserinfo());
+        //when - then
         assertThat(user.getEmail()).isEqualTo("email@email.com");
         assertThat(user.getNickname()).isEqualTo("nickname");
         assertThat(user.getPassword()).isEqualTo("password");
@@ -24,7 +26,9 @@ public class UserDtoTest {
     @DisplayName("유저 업데이트 DTO")
     @Test
     void UserUpdateDto(){
+        //given
         User user = new User(userSignupRequest.getNickname(), userSignupRequest.getEmail(), userSignupRequest.getPassword(), userSignupRequest.getUserinfo());
+        //when
         UserProfileRequest userProfileRequest = new UserProfileRequest("password", "nnickname", "userIInfo");
         if(user.getPassword().equals(userProfileRequest.getPassword())){
            user.updateProfile(userProfileRequest);
@@ -32,6 +36,7 @@ public class UserDtoTest {
         else{
             throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
         }
+        //then
         assertThat(user.getNickname()).isEqualTo("nnickname");
         assertThat(user.getUserInfo()).isEqualTo("userIInfo");
 

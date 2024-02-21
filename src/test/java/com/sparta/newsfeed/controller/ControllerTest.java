@@ -6,12 +6,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.newsfeed.config.WebSecurityConfig;
 import com.sparta.newsfeed.dto.ProductRequestDto;
-import com.sparta.newsfeed.dto.user.UserSignupRequest;
 import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.jwt.JwtUtil;
 import com.sparta.newsfeed.security.JwtAuthenticationFilter;
@@ -23,8 +21,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -33,7 +29,6 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -50,7 +45,7 @@ import org.springframework.web.multipart.MultipartFile;
     }
 )
 @MockBean(JpaMetamodelMappingContext.class)
-public class ContollerTest {
+public class ControllerTest {
     private MockMvc mvc;
 
     private Principal mockPrincipal;
@@ -113,14 +108,14 @@ public class ContollerTest {
     @Test
     @DisplayName("상품 등록")
     void productCreateTest() throws Exception{
-
+        //given
         this.mockUserSetup();
 
         MultipartFile file = null;
         ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
 
         String postInfo = objectMapper.writeValueAsString(requestDto);
-
+        //when - then
         mvc.perform(post("/api/product")
             .content(postInfo)
             .contentType(MediaType.APPLICATION_JSON)
