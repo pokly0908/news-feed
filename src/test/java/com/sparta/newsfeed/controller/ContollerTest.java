@@ -2,6 +2,7 @@ package com.sparta.newsfeed.controller;
 
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -10,8 +11,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.newsfeed.config.WebSecurityConfig;
 import com.sparta.newsfeed.dto.ProductRequestDto;
+import com.sparta.newsfeed.dto.user.UserSignupRequest;
 import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.jwt.JwtUtil;
+import com.sparta.newsfeed.security.JwtAuthenticationFilter;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.ProductService;
 import com.sparta.newsfeed.service.UserService;
@@ -21,6 +24,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -45,7 +49,6 @@ import org.springframework.web.multipart.MultipartFile;
         )
     }
 )
-
 @MockBean(JpaMetamodelMappingContext.class)
 public class ContollerTest {
     private MockMvc mvc;
@@ -67,19 +70,27 @@ public class ContollerTest {
     @MockBean
     JwtUtil jwtUtil;
 
+    @MockBean
+    JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders.webAppContextSetup(context)
+            .addFilter(jwtAuthenticationFilter)
             .apply(springSecurity(new MockSpringSecurityFilter()))
             .build();
     }
 
     private void mockUserSetup() {
-        // Mock 테스트 유져 생성
+        // Mock 테스트 유저 생성
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
         UserDetailsImpl testUserDetails = new UserDetailsImpl(user);
-        mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "", testUserDetails.getAuthorities());
+        //credentials을 NULL로 하면 에러가나서 password입력
+        mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "password", testUserDetails.getAuthorities());
     }
+
+
+
 
     @Test
     @DisplayName("회원 가입 요청 처리")
@@ -87,15 +98,15 @@ public class ContollerTest {
         // given
         MultiValueMap<String, String> signupRequestForm = new LinkedMultiValueMap<>();
         signupRequestForm.add("nickname", "test");
-        signupRequestForm.add("password", "test");
         signupRequestForm.add("email", "test@test.com");
-        signupRequestForm.add("userInfo", "test");
+        signupRequestForm.add("password", "test");
+        signupRequestForm.add("userinfo", "test");
 
         // when - then
         mvc.perform(post("/api/users/signup")
                 .params(signupRequestForm)
-
             )
+            .andExpect(status().isOk())
             .andDo(print());
     }
 
@@ -104,6 +115,7 @@ public class ContollerTest {
     void productCreateTest() throws Exception{
 
         this.mockUserSetup();
+
         MultipartFile file = null;
         ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
 
@@ -118,5 +130,4 @@ public class ContollerTest {
             .andExpect(status().isOk())
             .andDo(print());
     }
-
 }
