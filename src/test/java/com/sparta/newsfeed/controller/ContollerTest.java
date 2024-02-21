@@ -113,14 +113,14 @@ public class ContollerTest {
     @Test
     @DisplayName("상품 등록")
     void productCreateTest() throws Exception{
-
+        //given
         this.mockUserSetup();
 
         MultipartFile file = null;
         ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
 
         String postInfo = objectMapper.writeValueAsString(requestDto);
-
+        //when - then
         mvc.perform(post("/api/product")
             .content(postInfo)
             .contentType(MediaType.APPLICATION_JSON)

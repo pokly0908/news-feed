@@ -36,31 +36,33 @@ public class WishRepositoryTest {
     @DisplayName("관심상품 저장")
     @Test
     void wishCreate(){
+        //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
 
         MultipartFile file = null;
         ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
         Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
-
+        //when
         userRepository.save(user);
         productRepository.save(product);
 
         Wish wish = new Wish(user, product);
 
         Wish saveWish = wishRepository.save(wish);
-
+        //then
         assertThat(saveWish).isEqualTo(wish);
     }
 
     @DisplayName("관심상품 삭제")
     @Test
     void wishDelete(){
+        //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
 
         MultipartFile file = null;
         ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
         Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
-
+        //when
         userRepository.save(user);
         productRepository.save(product);
 
@@ -68,7 +70,7 @@ public class WishRepositoryTest {
         wishRepository.save(wish);
 
         wishRepository.delete(wish);
-
+        //then
         assertThat(wishRepository.findAll()).isEmpty();
     }
 }

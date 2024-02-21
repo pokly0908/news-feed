@@ -19,8 +19,11 @@ public class ProductDtoTest {
     @DisplayName("상품 생성")
     @Test
     void ProductCreateTest(){
+        // given
         ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
+        // when
         Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
+        //then
         assertThat(product.getUser()).isEqualTo(user);
         assertThat(product.getUsername()).isEqualTo("email@email.com");
         assertThat(product.getCategory()).isEqualTo("category");
@@ -33,11 +36,13 @@ public class ProductDtoTest {
     @DisplayName("상품 수정")
     @Test
     void ProductUpdateTest(){
+        //given
         ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
         Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
+        //when
         ProductRequestDto newRequestDto = new ProductRequestDto("newcategory", "newtitle", "newproductInfo", 20000, file);
         product.update(newRequestDto);
-
+        //then
         assertThat(product.getUser()).isEqualTo(user);
         assertThat(product.getUsername()).isEqualTo("email@email.com");
         assertThat(product.getCategory()).isEqualTo("newcategory");
