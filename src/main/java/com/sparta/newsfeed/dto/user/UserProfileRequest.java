@@ -1,9 +1,11 @@
 package com.sparta.newsfeed.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class UserProfileRequest {
 
     @NotBlank

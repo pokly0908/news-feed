@@ -11,6 +11,7 @@ import com.sparta.newsfeed.dto.user.UserProfileRequest;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter

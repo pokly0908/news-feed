@@ -1,6 +1,7 @@
 package com.sparta.newsfeed.security;
 
 import com.sparta.newsfeed.entity.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,15 +10,12 @@ import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
 
+    @Getter
     private final User user;
     Collection<GrantedAuthority> authorities = new ArrayList<>();
 
     public UserDetailsImpl(User user) {
         this.user = user;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     @Override
