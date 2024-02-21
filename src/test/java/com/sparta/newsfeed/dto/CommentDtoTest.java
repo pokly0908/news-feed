@@ -21,9 +21,11 @@ public class CommentDtoTest {
     @DisplayName("댓글 생성")
     @Test
     void CommentCreateTest(){
+        // given
         CommentRequestDto commentRequestDto = new CommentRequestDto("댓글");
+        // when
         Comment comment = new Comment(commentRequestDto, product, user);
-
+        //then
         assertThat(comment.getContents()).isEqualTo("댓글");
         assertThat(comment.getUser()).isEqualTo(user);
         assertThat(comment.getProduct()).isEqualTo(product);
@@ -32,11 +34,13 @@ public class CommentDtoTest {
     @DisplayName("댓글 수정")
     @Test
     void commentUpdateTest(){
+        // given
         CommentRequestDto commentRequestDto = new CommentRequestDto("댓글");
         Comment comment = new Comment(commentRequestDto, product, user);
+        //when
         CommentRequestDto newCommentRequestDto = new CommentRequestDto("댓글수정");
         comment.update(newCommentRequestDto);
-
+        //then
         assertThat(comment.getContents()).isEqualTo("댓글수정");
         assertThat(comment.getUser()).isEqualTo(user);
         assertThat(comment.getProduct()).isEqualTo(product);

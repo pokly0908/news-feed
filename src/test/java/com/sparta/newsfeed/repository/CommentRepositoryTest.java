@@ -33,12 +33,13 @@ public class CommentRepositoryTest {
     @DisplayName("댓글 등록")
     @Test
     void commentCreate(){
+        //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
 
         MultipartFile file = null;
         ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
         Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
-
+        //when
         userRepository.save(user);
         productRepository.save(product);
 
@@ -46,19 +47,20 @@ public class CommentRepositoryTest {
         Comment comment = new Comment(commentRequestDto, product, user);
 
         Comment saveComment = commentRepository.save(comment);
-
+        //then
         assertThat(saveComment).isEqualTo(comment);
     }
 
     @DisplayName("댓글 삭제")
     @Test
     void commentDelete(){
+        //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
 
         MultipartFile file = null;
         ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
         Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
-
+        //when
         userRepository.save(user);
         productRepository.save(product);
 
@@ -67,6 +69,7 @@ public class CommentRepositoryTest {
         commentRepository.save(comment);
 
         commentRepository.delete(comment);
+        //then
         assertThat(commentRepository.findAll()).isEmpty();
     }
 

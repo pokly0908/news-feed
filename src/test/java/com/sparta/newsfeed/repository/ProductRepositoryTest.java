@@ -25,22 +25,25 @@ public class ProductRepositoryTest {
     @DisplayName("상품 등록")
     @Test
     void productCreate(){
-
+        //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
+        //when
         userRepository.save(user);
         MultipartFile file = null;
         ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
         Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
 
         Product saveProduct = productRepository.save(product);
-
+        //then
         assertThat(saveProduct).isEqualTo(product);
 
     }
     @DisplayName("상품 삭제")
     @Test
     void productRemove(){
+        //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
+        //when
         userRepository.save(user);
         MultipartFile file = null;
         ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
@@ -48,7 +51,7 @@ public class ProductRepositoryTest {
 
         productRepository.save(product);
         productRepository.delete(product);
-
+        //then
         assertThat(productRepository.findAll()).isEmpty();
     }
 
