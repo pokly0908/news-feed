@@ -14,8 +14,8 @@
  - [x] 로그아웃 기능
    - [x] 전달받은 JWT를 blackList에 등록해 로그아웃 처리
 
- -[x] 관심상품 기능
-   -[x] 유저와 상품을 저장
+ - [x] 관심상품 기능
+   - [x] 유저와 상품을 저장
  - [x] 관심상품 조회
    - [x] productId, title, productInfo를 반환
 
