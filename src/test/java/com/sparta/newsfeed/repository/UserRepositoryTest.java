@@ -2,6 +2,7 @@ package com.sparta.newsfeed.repository;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sparta.newsfeed.entity.User;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +29,40 @@ public class UserRepositoryTest {
     void saveUser(){
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
         User userSave = userRepository.save(user);
-        System.out.println("usersave = " + userSave);
+        assertThat(user).isEqualTo(userSave);
+    }
+
+    @DisplayName("유저 조회")
+    @Test
+    void loadUser(){
+        User user = new User("닉네임", "email@email.com", "password", "자기소개");
+        userRepository.save(user);
+
+        User find = userRepository.findByEmail(user.getEmail()).orElse(null);
+
+        assertThat(find).isEqualTo(user);
+    }
+
+    @DisplayName("유저 삭제")
+    @Test
+    void removeUser(){
+        User user = new User("닉네임", "email@email.com", "password", "자기소개");
+        userRepository.save(user);
+
+        userRepository.delete(user);
+
+        assertThat(userRepository.findAll()).isEmpty();
+    }
+
+    @DisplayName("없는 유저 찾기")
+    @Test
+    void findNoUser(){
+        User user = new User("닉네임", "email@email.com", "password", "자기소개");
+        userRepository.save(user);
+        String nickname = "asd";
+
+        assertThatThrownBy(() -> userRepository.findByNickname(nickname).orElseThrow(() -> new IllegalArgumentException("")))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
 

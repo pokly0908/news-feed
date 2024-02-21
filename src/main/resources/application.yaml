@@ -26,7 +26,7 @@ logging:
 file:
   dir: C:/fileUploadExample/uploadfile/
 image:
-  upload-dir: ${dirPath}
+  upload-dir: C:/Users/pokly/Documents/NBK/news-feed/src/main/resources/images
 jwt:
   secret:
     key: 7Iqk7YyM66W07YOA7L2U65Sp7YG065+9U3ByaW5n6rCV7J2Y7Yqc7YSw7LWc7JuQ67mI7J6F64uI64ukLg==
@@ -41,8 +41,9 @@ spring:
 
   datasource:
     username: sa
+    password:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/test;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MySQL
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MySQL
 
   jpa:
     hibernate:
