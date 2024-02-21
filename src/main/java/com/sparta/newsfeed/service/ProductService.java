@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class ProductService {
     private final UploadService uploadService;
 
     @Transactional
-    public ProductResponseDto createProduct(ProductRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ProductResponseDto createProduct(@RequestParam(required = false) ProductRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String imageUrl = uploadService.uploadImageAndGetUrl(requestDto.getImage());
         Product product = productRepository.save(new Product(requestDto, userDetails, imageUrl));
         return new ProductResponseDto(product);
