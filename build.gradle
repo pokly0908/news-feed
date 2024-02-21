@@ -32,6 +32,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'com.h2database:h2'
+//    runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'com.h2database:h2'
 
     // validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -43,6 +46,8 @@ dependencies {
 
     // json
     implementation 'org.json:json:20231013'
+
+
 
 }
 
