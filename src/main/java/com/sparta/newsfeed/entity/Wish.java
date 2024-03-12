@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "WISH")
 @NoArgsConstructor
 public class Wish {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long WishId;
@@ -28,7 +29,7 @@ public class Wish {
     @JoinColumn(name = "productId")
     private Product product;
 
-    public Wish(User user, Product product){
+    public Wish(User user, Product product) {
         this.user = user;
         this.product = product;
     }

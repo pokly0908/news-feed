@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public class WishResponseDto {
+
     private final String message;
     private final HttpStatus httpStatus;
 }

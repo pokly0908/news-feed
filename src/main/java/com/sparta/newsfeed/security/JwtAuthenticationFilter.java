@@ -16,6 +16,7 @@ import java.io.IOException;
 
 @Slf4j(topic = "로그인 및 JWT 생성")
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
     private final JwtUtil jwtUtil;
 
     public JwtAuthenticationFilter(JwtUtil jwtUtil) {
@@ -24,16 +25,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request,
+        HttpServletResponse response) throws AuthenticationException {
         try {
-            UserSignRequest requestDto = new ObjectMapper().readValue(request.getInputStream(), UserSignRequest.class);
+            UserSignRequest requestDto = new ObjectMapper().readValue(request.getInputStream(),
+                UserSignRequest.class);
 
             return getAuthenticationManager().authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            requestDto.getEmail(),
-                            requestDto.getPassword(),
-                            null
-                    )
+                new UsernamePasswordAuthenticationToken(
+                    requestDto.getEmail(),
+                    requestDto.getPassword(),
+                    null
+                )
             );
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -42,7 +45,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
+    protected void successfulAuthentication(HttpServletRequest request,
+        HttpServletResponse response, FilterChain chain, Authentication authResult)
+        throws IOException {
         String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
 
         String token = jwtUtil.createToken(username);
@@ -54,7 +59,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
+    protected void unsuccessfulAuthentication(HttpServletRequest request,
+        HttpServletResponse response, AuthenticationException failed) throws IOException {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         response.setCharacterEncoding("utf-8");
         response.getWriter().write("회원을 찾을 수 없습니다.");

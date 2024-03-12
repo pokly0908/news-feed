@@ -9,10 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationResponseDto {
+
     private String message;
     private boolean read;
 
-    public NotificationResponseDto(Notification notification){
+    public NotificationResponseDto(Notification notification) {
         this.message = notification.getMessage();
         this.read = notification.isReadStatus();
     }

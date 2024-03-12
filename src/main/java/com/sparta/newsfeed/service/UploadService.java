@@ -14,10 +14,11 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class UploadService {
+
     @Value("${image.upload-dir}")
     private String uploadDir;
 
-    public String uploadImageAndGetUrl(MultipartFile image){
+    public String uploadImageAndGetUrl(MultipartFile image) {
         try {
             // 파일 이름 생성
             String fileName = StringUtils.cleanPath(image.getOriginalFilename());
@@ -27,9 +28,9 @@ public class UploadService {
             Files.copy(image.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/uploads/")
-                    .path(fileName)
-                    .toUriString();
+                .path("/uploads/")
+                .path(fileName)
+                .toUriString();
 
             return fileDownloadUri;
         } catch (IOException ex) {

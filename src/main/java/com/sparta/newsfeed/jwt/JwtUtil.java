@@ -18,6 +18,7 @@ import java.util.List;
 @Slf4j(topic = "JwtUtil")
 @Component
 public class JwtUtil {
+
     // Header KEY 값
     public static final String JWT_HEADER = "JWT";
 
@@ -44,12 +45,12 @@ public class JwtUtil {
         Date date = new Date();
 
         return BEARER_PREFIX +
-                Jwts.builder()
-                        .setSubject(username) // 사용자 식별자값(ID)
-                        .setExpiration(new Date(date.getTime() + TOKEN_TIME)) // 만료 시간
-                        .setIssuedAt(date) // 발급일
-                        .signWith(key, signatureAlgorithm) // 암호화 알고리즘
-                        .compact();
+            Jwts.builder()
+                .setSubject(username) // 사용자 식별자값(ID)
+                .setExpiration(new Date(date.getTime() + TOKEN_TIME)) // 만료 시간
+                .setIssuedAt(date) // 발급일
+                .signWith(key, signatureAlgorithm) // 암호화 알고리즘
+                .compact();
     }
 
     // header 에서 JWT 가져오기
@@ -67,7 +68,7 @@ public class JwtUtil {
     // 토큰 검증
     public boolean validateToken(String token) {
         try {
-            if( blackList.stream().anyMatch(t -> t.equals(token))) {
+            if (blackList.stream().anyMatch(t -> t.equals(token))) {
                 throw new IllegalArgumentException("잘못된 JWT 토큰입니다.");
             }
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);

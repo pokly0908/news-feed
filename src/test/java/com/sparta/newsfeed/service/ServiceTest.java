@@ -39,11 +39,11 @@ public class ServiceTest {
 
         Product product = new Product(productRequestDto, user, null);
 
-        ProductService productService = new ProductService(productRepository, uploadService);
+        ProductServiceImpl productServiceImpl = new ProductServiceImpl(productRepository, uploadService);
 
         given(productRepository.findById(productId)).willReturn(Optional.of(product));
         //when
-        Long result = productService.updateProduct(productId, productRequestDto);
+        Long result = productServiceImpl.updateProduct(productId, productRequestDto);
 
         //then
         assertEquals(productId, result);

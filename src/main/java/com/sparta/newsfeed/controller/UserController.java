@@ -4,10 +4,9 @@ import com.sparta.newsfeed.dto.NotificationResponseDto;
 import com.sparta.newsfeed.dto.user.UserProfileRequest;
 import com.sparta.newsfeed.dto.user.UserProfileResponse;
 import com.sparta.newsfeed.dto.user.UserSignupRequest;
-import com.sparta.newsfeed.entity.Notification;
 import com.sparta.newsfeed.jwt.JwtUtil;
 import com.sparta.newsfeed.security.UserDetailsImpl;
-import com.sparta.newsfeed.service.UserService;
+import com.sparta.newsfeed.service.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,22 +24,24 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     private final JwtUtil jwtUtil;
 
     @PostMapping("/users/signup")
-    public ResponseEntity<String> signup(@Valid @RequestBody UserSignupRequest request, BindingResult bindingResult) {
+    public ResponseEntity<String> signup(@Valid @RequestBody UserSignupRequest request,
+        BindingResult bindingResult) {
 
         String errorMessages = "";
         if (bindingResult.hasErrors()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                errorMessages += fieldError.getField() + " : " + fieldError.getDefaultMessage() + "\n";
+                errorMessages +=
+                    fieldError.getField() + " : " + fieldError.getDefaultMessage() + "\n";
             }
             return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
         }
 
-        userService.signup(request);
+        userServiceImpl.signup(request);
 
         return ResponseEntity.ok("회원가입 성공");
     }
@@ -53,34 +54,37 @@ public class UserController {
     }
 
     @GetMapping("/users/notification")
-    public List<NotificationResponseDto> getNotifications(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return userService.getNotifications(userDetails.getUser());
+    public List<NotificationResponseDto> getNotifications(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userServiceImpl.getNotifications(userDetails.getUser());
     }
 
     @GetMapping("/users/profile")
     public ResponseEntity<UserProfileResponse> getProfile(
-            @AuthenticationPrincipal UserDetailsImpl userDetails
+        @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        UserProfileResponse response = userService.getProfile(userDetails.getUser());
+        UserProfileResponse response = userServiceImpl.getProfile(userDetails.getUser());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/users/profile")
     public ResponseEntity<?> updateProfile(
-            @Valid @RequestBody UserProfileRequest request,
-            BindingResult bindingResult,
-            @AuthenticationPrincipal UserDetailsImpl userDetails
+        @Valid @RequestBody UserProfileRequest request,
+        BindingResult bindingResult,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         String errorMessages = "";
         if (bindingResult.hasErrors()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                errorMessages += fieldError.getField() + " : " + fieldError.getDefaultMessage() + "\n";
+                errorMessages +=
+                    fieldError.getField() + " : " + fieldError.getDefaultMessage() + "\n";
             }
             return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
         }
 
-        UserProfileResponse response = userService.updateProfile(userDetails.getUser(), request);
+        UserProfileResponse response = userServiceImpl.updateProfile(userDetails.getUser(),
+            request);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

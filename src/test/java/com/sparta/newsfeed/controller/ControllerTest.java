@@ -14,8 +14,8 @@ import com.sparta.newsfeed.entity.User;
 import com.sparta.newsfeed.jwt.JwtUtil;
 import com.sparta.newsfeed.security.JwtAuthenticationFilter;
 import com.sparta.newsfeed.security.UserDetailsImpl;
-import com.sparta.newsfeed.service.ProductService;
-import com.sparta.newsfeed.service.UserService;
+import com.sparta.newsfeed.service.ProductServiceImpl;
+import com.sparta.newsfeed.service.UserServiceImpl;
 import java.security.Principal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -57,10 +57,10 @@ public class ControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    UserService userService;
+    UserServiceImpl userServiceImpl;
 
     @MockBean
-    ProductService productService;
+    ProductServiceImpl productServiceImpl;
 
     @MockBean
     JwtUtil jwtUtil;

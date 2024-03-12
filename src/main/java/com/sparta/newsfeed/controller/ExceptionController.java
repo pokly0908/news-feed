@@ -19,17 +19,18 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(DuplicateKeyException.class)
-    public ResponseEntity<ExceptionDto> duplicateExceptionHandler(DuplicateKeyException ex){
+    public ResponseEntity<ExceptionDto> duplicateExceptionHandler(DuplicateKeyException ex) {
         return createResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<ExceptionDto> NoSuchElementExceptionHandler(NoSuchElementException ex){
+    public ResponseEntity<ExceptionDto> NoSuchElementExceptionHandler(NoSuchElementException ex) {
         return createResponse(HttpStatus.NO_CONTENT, ex.getMessage());
     }
 
     private ResponseEntity<ExceptionDto> createResponse(HttpStatus httpStatus, String message) {
         return ResponseEntity.status(httpStatus.value())
-                .body(ExceptionDto.builder().statusCode(httpStatus.value()).state(httpStatus).message(message).build());
+            .body(ExceptionDto.builder().statusCode(httpStatus.value()).state(httpStatus)
+                .message(message).build());
     }
 }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "COMMENT")
 public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,7 +26,7 @@ public class Comment {
     @JoinColumn(name = "productId", nullable = false)
     private Product product;
 
-    public Comment(CommentRequestDto requestDto, Product product, User user){
+    public Comment(CommentRequestDto requestDto, Product product, User user) {
         this.contents = requestDto.getContents();
         this.product = product;
         this.user = user;

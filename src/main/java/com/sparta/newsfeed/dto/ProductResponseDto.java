@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 public class ProductResponseDto {
+
     private Long productId;
     private String username;
     private CategoryEnum category;

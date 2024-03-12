@@ -4,75 +4,46 @@ import com.sparta.newsfeed.dto.NotificationResponseDto;
 import com.sparta.newsfeed.dto.user.UserProfileRequest;
 import com.sparta.newsfeed.dto.user.UserProfileResponse;
 import com.sparta.newsfeed.dto.user.UserSignupRequest;
-import com.sparta.newsfeed.entity.Notification;
 import com.sparta.newsfeed.entity.User;
-import com.sparta.newsfeed.repository.NotificationRepository;
-import com.sparta.newsfeed.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@RequiredArgsConstructor
-@Service
-public class UserService {
+public interface UserService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final NotificationRepository notificationRepository;
-
+    /**
+     * 유저 등록
+     *
+     * @param request 회원가입 요청정보
+     */
     @Transactional
-    public void signup(UserSignupRequest request) {
-        String nickname = request.getNickname();
-        String email = request.getEmail();
-        String password = passwordEncoder.encode(request.getPassword());
-        String userinfo = request.getUserinfo();
+    void signup(UserSignupRequest request);
 
-
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new IllegalArgumentException("중복된 email 입니다.");
-        }
-
-        if (userRepository.findByNickname(nickname).isPresent()) {
-            throw new IllegalArgumentException("중복된 nickname 입니다.");
-        }
-
-        User user = new User(nickname, email, password, userinfo);
-        userRepository.save(user);
-    }
-
+    /**
+     * 프로필 조회
+     *
+     * @param user 유저 요청정보
+     * @return 유저 프로필 조회
+     */
     @Transactional(readOnly = true)
-    public UserProfileResponse getProfile(User user) {
-        User findUser = userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+    UserProfileResponse getProfile(User user);
 
-        return new UserProfileResponse(findUser);
-    }
-
+    /**
+     * 프로필 업데이트
+     *
+     * @param user    유저 요청정보
+     * @param request 프로필 변경내용 정보
+     * @return 유저 변경된 프로필 조회
+     */
     @Transactional
-    public UserProfileResponse updateProfile(User user, UserProfileRequest request) {
-        User findUser = userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+    UserProfileResponse updateProfile(User user, UserProfileRequest request);
 
-        if (! passwordEncoder.matches(request.getPassword(), findUser.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 다릅니다");
-        }
-
-        user.updateProfile(request);
-
-        return new UserProfileResponse(user);
-    }
-
+    /**
+     * 알림
+     *
+     * @param user 유저 요청정보
+     * @return 유저에게 필요한 알림정보
+     */
     @Transactional
-    public List<NotificationResponseDto> getNotifications(User user) {
-        User findUser = userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-        List<Notification> notifications = notificationRepository.findByUserUserIdAndReadStatusFalse(findUser.getUserId());
-        for (Notification notification : notifications) {
-            notification.setReadStatus(true);
-        }
-        return notifications.stream().map(NotificationResponseDto::new).toList();
-    }
+    List<NotificationResponseDto> getNotifications(User user);
 }

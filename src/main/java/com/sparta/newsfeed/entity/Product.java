@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "product")
 @NoArgsConstructor
 public class Product extends Timestamped {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
@@ -48,10 +49,11 @@ public class Product extends Timestamped {
         this.price = requestDto.getPrice();
         this.imageUrl = imageUrl;
     }
+
     public Product(ProductRequestDto requestDto, User user, String imageUrl) {
         this.user = user;
         this.username = user.getEmail();
-        this.category = requestDto.getCategory();
+        this.category = CategoryEnum.valueOf(requestDto.getCategory());
         this.title = requestDto.getTitle();
         this.productInfo = requestDto.getProductInfo();
         this.price = requestDto.getPrice();

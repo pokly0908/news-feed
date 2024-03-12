@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @AllArgsConstructor
 public class ProductRequestDto {
+
     private String category;
     private String title;
     private String productInfo;
