@@ -2,7 +2,6 @@ package com.sparta.newsfeed.service;
 
 import com.sparta.newsfeed.dto.WishAllResponseDto;
 import com.sparta.newsfeed.security.UserDetailsImpl;
-
 import java.util.List;
 
 public interface WishService {

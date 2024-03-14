@@ -22,11 +22,12 @@ import org.springframework.test.context.ActiveProfiles;
 public class UserRepositoryTest {
 
 
-    @Autowired private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @DisplayName("유저 저장")
     @Test
-    void saveUser(){
+    void saveUser() {
         //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
         //when
@@ -37,7 +38,7 @@ public class UserRepositoryTest {
 
     @DisplayName("유저 조회")
     @Test
-    void loadUser(){
+    void loadUser() {
         //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
         //when
@@ -50,7 +51,7 @@ public class UserRepositoryTest {
 
     @DisplayName("유저 삭제")
     @Test
-    void removeUser(){
+    void removeUser() {
         //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
         //when
@@ -63,14 +64,15 @@ public class UserRepositoryTest {
 
     @DisplayName("없는 유저 찾기")
     @Test
-    void findNoUser(){
+    void findNoUser() {
         //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
         //when
         userRepository.save(user);
         String nickname = "asd";
         //then
-        assertThatThrownBy(() -> userRepository.findByNickname(nickname).orElseThrow(() -> new IllegalArgumentException("")))
+        assertThatThrownBy(() -> userRepository.findByNickname(nickname)
+            .orElseThrow(() -> new IllegalArgumentException("")))
             .isInstanceOf(IllegalArgumentException.class);
     }
 

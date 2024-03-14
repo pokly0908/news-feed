@@ -13,14 +13,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 @DisplayName("Comment Dto Test")
 public class CommentDtoTest {
+
     User user = new User("닉네임", "email@email.com", "password", "자기소개");
     MultipartFile file = null;
-    ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
+    ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000,
+        file);
     Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
 
     @DisplayName("댓글 생성")
     @Test
-    void CommentCreateTest(){
+    void CommentCreateTest() {
         // given
         CommentRequestDto commentRequestDto = new CommentRequestDto("댓글");
         // when
@@ -33,7 +35,7 @@ public class CommentDtoTest {
 
     @DisplayName("댓글 수정")
     @Test
-    void commentUpdateTest(){
+    void commentUpdateTest() {
         // given
         CommentRequestDto commentRequestDto = new CommentRequestDto("댓글");
         Comment comment = new Comment(commentRequestDto, product, user);
@@ -46,7 +48,6 @@ public class CommentDtoTest {
         assertThat(comment.getProduct()).isEqualTo(product);
 
     }
-
 
 
 }

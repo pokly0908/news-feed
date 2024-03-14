@@ -46,6 +46,7 @@ import org.springframework.web.multipart.MultipartFile;
 )
 @MockBean(JpaMetamodelMappingContext.class)
 public class ControllerTest {
+
     private MockMvc mvc;
 
     private Principal mockPrincipal;
@@ -81,10 +82,9 @@ public class ControllerTest {
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
         UserDetailsImpl testUserDetails = new UserDetailsImpl(user);
         //credentials을 NULL로 하면 에러가나서 password입력
-        mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "password", testUserDetails.getAuthorities());
+        mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "password",
+            testUserDetails.getAuthorities());
     }
-
-
 
 
     @Test
@@ -107,21 +107,22 @@ public class ControllerTest {
 
     @Test
     @DisplayName("상품 등록")
-    void productCreateTest() throws Exception{
+    void productCreateTest() throws Exception {
         //given
         this.mockUserSetup();
 
         MultipartFile file = null;
-        ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
+        ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo",
+            10000, file);
 
         String postInfo = objectMapper.writeValueAsString(requestDto);
         //when - then
         mvc.perform(post("/api/product")
-            .content(postInfo)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .principal(mockPrincipal)
-        )
+                .content(postInfo)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .principal(mockPrincipal)
+            )
             .andExpect(status().isOk())
             .andDo(print());
     }

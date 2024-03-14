@@ -10,12 +10,16 @@ import org.junit.jupiter.api.Test;
 
 @DisplayName("User Dto Test")
 public class UserDtoTest {
-    private final UserSignupRequest userSignupRequest = new UserSignupRequest("email@email.com", "nickname", "password", "userInfo");
+
+    private final UserSignupRequest userSignupRequest = new UserSignupRequest("email@email.com",
+        "nickname", "password", "userInfo");
+
     @DisplayName("유저 생성 DTO")
     @Test
-    void UserSignupDto(){
+    void UserSignupDto() {
         //given
-        User user = new User(userSignupRequest.getNickname(), userSignupRequest.getEmail(), userSignupRequest.getPassword(), userSignupRequest.getUserinfo());
+        User user = new User(userSignupRequest.getNickname(), userSignupRequest.getEmail(),
+            userSignupRequest.getPassword(), userSignupRequest.getUserinfo());
         //when - then
         assertThat(user.getEmail()).isEqualTo("email@email.com");
         assertThat(user.getNickname()).isEqualTo("nickname");
@@ -25,15 +29,16 @@ public class UserDtoTest {
 
     @DisplayName("유저 업데이트 DTO")
     @Test
-    void UserUpdateDto(){
+    void UserUpdateDto() {
         //given
-        User user = new User(userSignupRequest.getNickname(), userSignupRequest.getEmail(), userSignupRequest.getPassword(), userSignupRequest.getUserinfo());
+        User user = new User(userSignupRequest.getNickname(), userSignupRequest.getEmail(),
+            userSignupRequest.getPassword(), userSignupRequest.getUserinfo());
         //when
-        UserProfileRequest userProfileRequest = new UserProfileRequest("password", "nnickname", "userIInfo");
-        if(user.getPassword().equals(userProfileRequest.getPassword())){
-           user.updateProfile(userProfileRequest);
-        }
-        else{
+        UserProfileRequest userProfileRequest = new UserProfileRequest("password", "nnickname",
+            "userIInfo");
+        if (user.getPassword().equals(userProfileRequest.getPassword())) {
+            user.updateProfile(userProfileRequest);
+        } else {
             throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
         }
         //then

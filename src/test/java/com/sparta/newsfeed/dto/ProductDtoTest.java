@@ -41,7 +41,7 @@ public class ProductDtoTest {
         Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
         //when
         ProductRequestDto newRequestDto = new ProductRequestDto("newcategory", "newtitle", "newproductInfo", 20000, file);
-        product.update(newRequestDto);
+        product.update(newRequestDto, null);
         //then
         assertThat(product.getUser()).isEqualTo(user);
         assertThat(product.getUsername()).isEqualTo("email@email.com");

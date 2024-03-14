@@ -20,17 +20,21 @@ import org.springframework.web.multipart.MultipartFile;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ProductRepositoryTest {
 
-    @Autowired private UserRepository userRepository;
-    @Autowired private ProductRepository productRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ProductRepository productRepository;
+
     @DisplayName("상품 등록")
     @Test
-    void productCreate(){
+    void productCreate() {
         //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
         //when
         userRepository.save(user);
         MultipartFile file = null;
-        ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
+        ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo",
+            10000, file);
         Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
 
         Product saveProduct = productRepository.save(product);
@@ -38,15 +42,17 @@ public class ProductRepositoryTest {
         assertThat(saveProduct).isEqualTo(product);
 
     }
+
     @DisplayName("상품 삭제")
     @Test
-    void productRemove(){
+    void productRemove() {
         //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
         //when
         userRepository.save(user);
         MultipartFile file = null;
-        ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
+        ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo",
+            10000, file);
         Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
 
         productRepository.save(product);

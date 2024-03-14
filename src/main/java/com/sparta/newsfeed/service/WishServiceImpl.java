@@ -45,8 +45,7 @@ public class WishServiceImpl implements WishService {
         for (Wish value : wish) {
             Product product = value.getProduct();
             wishs.add(new WishAllResponseDto(value.getWishId(), product.getProductId(),
-                product.getTitle(),
-                product.getProductInfo()));
+                product.getTitle(), product.getProductInfo()));
         }
         return wishs;
     }

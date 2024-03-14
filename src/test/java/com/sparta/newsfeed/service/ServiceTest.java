@@ -6,8 +6,10 @@ import static org.mockito.BDDMockito.given;
 import com.sparta.newsfeed.dto.ProductRequestDto;
 import com.sparta.newsfeed.entity.Product;
 import com.sparta.newsfeed.entity.User;
+import com.sparta.newsfeed.repository.NotificationRepository;
 import com.sparta.newsfeed.repository.ProductRepository;
 import com.sparta.newsfeed.repository.UserRepository;
+import com.sparta.newsfeed.repository.WishRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +25,11 @@ public class ServiceTest {
     UserRepository userRepository;
 
     @Mock
+    WishRepository wishRepository;
+
+    @Mock
+    NotificationRepository notificationRepository;
+    @Mock
     ProductRepository productRepository;
 
     @Mock
@@ -30,16 +37,18 @@ public class ServiceTest {
 
     @Test
     @DisplayName("상품정보 수정")
-    void productUpdate(){
+    void productUpdate() {
         //given
         Long productId = 10L;
         User user = new User();
         MultipartFile file = null;
-        ProductRequestDto productRequestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
+        ProductRequestDto productRequestDto = new ProductRequestDto("category", "title",
+            "productInfo", 10000, file);
 
         Product product = new Product(productRequestDto, user, null);
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(productRepository, uploadService);
+        ProductServiceImpl productServiceImpl = new ProductServiceImpl(productRepository,
+            uploadService, wishRepository, notificationRepository);
 
         given(productRepository.findById(productId)).willReturn(Optional.of(product));
         //when

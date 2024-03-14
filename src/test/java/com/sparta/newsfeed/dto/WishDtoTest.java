@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
 
 public class WishDtoTest {
+
     @DisplayName("관심상품 생성")
     @Test
     void WishCreateTest() {
@@ -19,7 +20,8 @@ public class WishDtoTest {
 
         //when
         MultipartFile file = null;
-        ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
+        ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo",
+            10000, file);
         Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
         Wish wish = new Wish(user, product);
         //then

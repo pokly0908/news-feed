@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class WishRepositoryTest {
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -35,12 +36,13 @@ public class WishRepositoryTest {
 
     @DisplayName("관심상품 저장")
     @Test
-    void wishCreate(){
+    void wishCreate() {
         //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
 
         MultipartFile file = null;
-        ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
+        ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo",
+            10000, file);
         Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
         //when
         userRepository.save(user);
@@ -55,12 +57,13 @@ public class WishRepositoryTest {
 
     @DisplayName("관심상품 삭제")
     @Test
-    void wishDelete(){
+    void wishDelete() {
         //given
         User user = new User("닉네임", "email@email.com", "password", "자기소개");
 
         MultipartFile file = null;
-        ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo", 10000, file);
+        ProductRequestDto requestDto = new ProductRequestDto("category", "title", "productInfo",
+            10000, file);
         Product product = new Product(requestDto, new UserDetailsImpl(user), "NULL");
         //when
         userRepository.save(user);

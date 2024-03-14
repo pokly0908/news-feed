@@ -10,7 +10,7 @@ spring:
         format_sql: 'true'
         show_sql: 'true'
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
   datasource:
     password: accel@0908
     driver-class-name: com.mysql.cj.jdbc.Driver
