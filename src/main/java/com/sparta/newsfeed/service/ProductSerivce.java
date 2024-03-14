@@ -3,11 +3,12 @@ package com.sparta.newsfeed.service;
 import com.sparta.newsfeed.dto.ProductRequestDto;
 import com.sparta.newsfeed.dto.ProductResponseDto;
 import com.sparta.newsfeed.security.UserDetailsImpl;
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 public interface ProductSerivce {
 
@@ -27,7 +28,7 @@ public interface ProductSerivce {
      *
      * @return 상품 조회 결과
      */
-    List<ProductResponseDto> getProduct();
+    Page<ProductResponseDto> getProduct(Pageable pageable);
 
     /**
      * 상품 낱개 조회

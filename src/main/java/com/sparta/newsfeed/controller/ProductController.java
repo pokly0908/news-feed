@@ -4,11 +4,21 @@ import com.sparta.newsfeed.dto.ProductRequestDto;
 import com.sparta.newsfeed.dto.ProductResponseDto;
 import com.sparta.newsfeed.security.UserDetailsImpl;
 import com.sparta.newsfeed.service.ProductServiceImpl;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,16 +34,19 @@ public class ProductController {
     }
 
     @GetMapping("/product")
-    public List<ProductResponseDto> getProduct() {
-        return productServiceImpl.getProduct();
+    public Page<ProductResponseDto> getProduct(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productServiceImpl.getProduct(pageable);
     }
 
-    @GetMapping("/product/{productId}")
+    @GetMapping("/product/{productId}") //상품ID로 낱개 조회
     public List<ProductResponseDto> getProductById(@PathVariable Long productId) {
         return productServiceImpl.getProductById(productId);
     }
 
-    @GetMapping("/product/search")
+    @GetMapping("/product/search") //상품검색
     public List<ProductResponseDto> searchProduct(@RequestParam String param) {
         return productServiceImpl.searchProduct(param);
     }
